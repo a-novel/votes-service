@@ -1,0 +1,111 @@
+name: default
+
+on: [ push ]
+
+jobs:
+  # --------------------------------------------------------------------------------
+  # Test stage
+  # --------------------------------------------------------------------------------
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_USER: test
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+      - name: Install test framework
+        run: go install gotest.tools/gotestsum@latest
+      - name: Test
+        env:
+          POSTGRES_URL: "postgres://test:test@localhost:5432/postgres?sslmode=disable"
+          ENV: test
+        run: gotestsum --packages="./..." --junitfile report.xml --format pkgname -- -count=1 -p 1 -v -coverpkg=./...
+
+  # --------------------------------------------------------------------------------
+  # Build stage
+  # --------------------------------------------------------------------------------
+  build:
+    runs-on: ubuntu-latest
+    needs: [ test ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'setup Go'
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+      - name: 'build binary application'
+        run: go build cmd/api/main.go
+
+  build-docker:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    env:
+      PORT: 8080
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'build the docker image'
+        run: docker build .
+
+  # --------------------------------------------------------------------------------
+  # Deploy stage
+  # --------------------------------------------------------------------------------
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [ build-docker ]
+    if: github.ref == 'refs/heads/master' && success()
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'authenticate gcloud'
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+      - name: 'setup gcloud'
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ vars.PROJECT_ID }}
+      - name: 'docker auth'
+        run: |-
+          gcloud auth configure-docker ${{ vars.GAR_LOCATION }}-docker.pkg.dev
+      - name: 'create image name'
+        run: |-
+          echo "IMAGE_NAME=${{ vars.GAR_LOCATION }}-docker.pkg.dev/${{ vars.PROJECT_ID }}/${{ vars.APP }}/${{ vars.APP }}:${{ github.sha }}" >> $GITHUB_ENV
+      - name: 'build and push container'
+        run: |-
+          docker build -f Dockerfile -t "${{ env.IMAGE_NAME }}" ./
+          docker push "${{ env.IMAGE_NAME }}"
+      - name: 'deploy to google cloud run'
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v1
+        with:
+          secrets: |
+            POSTGRES_URL=agora-votes-service-postgres:latest
+          env_vars: |
+            ENV=prod
+            PROJECT_ID=${{ vars.PROJECT_ID }}
+          service: ${{ vars.APP }}
+          region: ${{ vars.REGION }}
+          project_id: ${{ vars.PROJECT_ID }}
+          image: ${{ env.IMAGE_NAME }}
+          flags: '--concurrency=100 --min-instances=1 --max-instances=3 --memory=512Mi --cpu=1 --platform=managed --allow-unauthenticated --set-cloudsql-instances=agora-postgres --port=8080 --cpu-boost --vpc-connector=agora-infra-connector'
+      - name: 'show output'
+        run: echo ${{ steps.deploy.outputs.url }}
