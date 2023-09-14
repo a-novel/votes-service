@@ -4,8 +4,7 @@ import (
 	"context"
 	goerrors "errors"
 	auth "github.com/a-novel/auth-service/framework"
-	"github.com/a-novel/go-framework/errors"
-	"github.com/a-novel/go-framework/validation"
+	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/adapters"
 	"github.com/a-novel/votes-service/pkg/dao"
 	"github.com/a-novel/votes-service/pkg/models"
@@ -41,16 +40,16 @@ func (s *castVoteServiceImpl) Cast(ctx context.Context, tokenRaw string, form mo
 		return nil, goerrors.Join(ErrIntrospectToken, err)
 	}
 	if !token.OK {
-		return nil, goerrors.Join(errors.ErrInvalidCredentials, ErrInvalidToken)
+		return nil, goerrors.Join(goframework.ErrInvalidCredentials, ErrInvalidToken)
 	}
 
-	if err := validation.CheckRestricted(lo.FromPtr(form.Vote), "", models.VoteValueUp, models.VoteValueDown); err != nil {
-		return nil, goerrors.Join(errors.ErrInvalidEntity, err)
+	if err := goframework.CheckRestricted(lo.FromPtr(form.Vote), "", models.VoteValueUp, models.VoteValueDown); err != nil {
+		return nil, goerrors.Join(goframework.ErrInvalidEntity, err)
 	}
 
 	targetClient := s.targetsClients[form.Target]
 	if targetClient == nil {
-		return nil, goerrors.Join(errors.ErrInvalidEntity, ErrInvalidTarget)
+		return nil, goerrors.Join(goframework.ErrInvalidEntity, ErrInvalidTarget)
 	}
 
 	// Prevent insertion if client call fails.

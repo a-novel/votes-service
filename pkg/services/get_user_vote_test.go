@@ -4,9 +4,8 @@ import (
 	"context"
 	authmocks "github.com/a-novel/auth-service/framework/mocks"
 	authmodels "github.com/a-novel/auth-service/pkg/models"
-	"github.com/a-novel/go-framework/errors"
-	"github.com/a-novel/go-framework/postgresql"
-	"github.com/a-novel/go-framework/test"
+	"github.com/a-novel/bunovel"
+	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/dao"
 	daomocks "github.com/a-novel/votes-service/pkg/dao/mocks"
 	"github.com/a-novel/votes-service/pkg/models"
@@ -37,68 +36,68 @@ func TestGetUserVoteService(t *testing.T) {
 		{
 			name:     "Success",
 			tokenRaw: "token",
-			targetID: test.NumberUUID(1),
+			targetID: goframework.NumberUUID(1),
 			target:   "target",
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO: true,
 			daoResp: &dao.VoteModel{
-				Metadata: postgresql.NewMetadata(test.NumberUUID(10), baseTime, nil),
+				Metadata: bunovel.NewMetadata(goframework.NumberUUID(10), baseTime, nil),
 				Vote:     models.VoteValueUp,
-				UserID:   test.NumberUUID(100),
-				TargetID: test.NumberUUID(1),
+				UserID:   goframework.NumberUUID(100),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 			},
 			expect: &models.Vote{
-				ID:        test.NumberUUID(10),
+				ID:        goframework.NumberUUID(10),
 				UpdatedAt: baseTime,
 				Vote:      models.VoteValueUp,
-				UserID:    test.NumberUUID(100),
-				TargetID:  test.NumberUUID(1),
+				UserID:    goframework.NumberUUID(100),
+				TargetID:  goframework.NumberUUID(1),
 				Target:    "target",
 			},
 		},
 		{
 			name:     "Success/Updated",
 			tokenRaw: "token",
-			targetID: test.NumberUUID(1),
+			targetID: goframework.NumberUUID(1),
 			target:   "target",
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO: true,
 			daoResp: &dao.VoteModel{
-				Metadata: postgresql.NewMetadata(test.NumberUUID(10), baseTime, &updateTime),
+				Metadata: bunovel.NewMetadata(goframework.NumberUUID(10), baseTime, &updateTime),
 				Vote:     models.VoteValueUp,
-				UserID:   test.NumberUUID(100),
-				TargetID: test.NumberUUID(1),
+				UserID:   goframework.NumberUUID(100),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 			},
 			expect: &models.Vote{
-				ID:        test.NumberUUID(10),
+				ID:        goframework.NumberUUID(10),
 				UpdatedAt: updateTime,
 				Vote:      models.VoteValueUp,
-				UserID:    test.NumberUUID(100),
-				TargetID:  test.NumberUUID(1),
+				UserID:    goframework.NumberUUID(100),
+				TargetID:  goframework.NumberUUID(1),
 				Target:    "target",
 			},
 		},
 		{
 			name:     "Error/DAOFailure",
 			tokenRaw: "token",
-			targetID: test.NumberUUID(1),
+			targetID: goframework.NumberUUID(1),
 			target:   "target",
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO: true,
@@ -108,15 +107,15 @@ func TestGetUserVoteService(t *testing.T) {
 		{
 			name:           "Error/NotAuthenticated",
 			tokenRaw:       "token",
-			targetID:       test.NumberUUID(1),
+			targetID:       goframework.NumberUUID(1),
 			target:         "target",
 			authClientResp: &authmodels.UserTokenStatus{},
-			expectErr:      errors.ErrInvalidCredentials,
+			expectErr:      goframework.ErrInvalidCredentials,
 		},
 		{
 			name:          "Error/AuthClientFailure",
 			tokenRaw:      "token",
-			targetID:      test.NumberUUID(1),
+			targetID:      goframework.NumberUUID(1),
 			target:        "target",
 			authClientErr: fooErr,
 			expectErr:     fooErr,

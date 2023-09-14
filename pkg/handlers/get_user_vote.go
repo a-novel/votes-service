@@ -1,7 +1,9 @@
 package handlers
 
 import (
-	"github.com/a-novel/go-framework/errors"
+	"github.com/a-novel/bunovel"
+	"github.com/a-novel/go-apis"
+	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/models"
 	"github.com/a-novel/votes-service/pkg/services"
 	"github.com/gin-gonic/gin"
@@ -33,10 +35,10 @@ func (h *getUserVoteHandlerImpl) Handle(c *gin.Context) {
 
 	vote, err := h.service.Get(c, token, query.TargetID.Value(), query.Target)
 	if err != nil {
-		errors.ErrorToHTTPCode(c, err, []errors.HTTPError{
-			{errors.ErrInvalidCredentials, http.StatusForbidden},
-			{errors.ErrNotFound, http.StatusNotFound},
-		})
+		apis.ErrorToHTTPCode(c, err, []apis.HTTPError{
+			{goframework.ErrInvalidCredentials, http.StatusForbidden},
+			{bunovel.ErrNotFound, http.StatusNotFound},
+		}, false)
 		return
 	}
 

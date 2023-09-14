@@ -2,8 +2,7 @@ package dao
 
 import (
 	"context"
-	"github.com/a-novel/go-framework/errors"
-	"github.com/a-novel/go-framework/postgresql"
+	"github.com/a-novel/bunovel"
 	"github.com/a-novel/votes-service/pkg/models"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
@@ -21,7 +20,7 @@ type VotesRepository interface {
 
 type VoteModel struct {
 	bun.BaseModel `bun:"table:votes"`
-	postgresql.Metadata
+	bunovel.Metadata
 
 	Vote     models.VoteValue `bun:"type:vote"`
 	UserID   uuid.UUID        `bun:"user_id"`
@@ -56,7 +55,7 @@ func (repository *votesRepositoryImpl) Get(ctx context.Context, userID, targetID
 		Scan(ctx)
 
 	if err != nil {
-		return nil, errors.HandlePGError(err)
+		return nil, bunovel.HandlePGError(err)
 	}
 
 	return model, nil
@@ -71,7 +70,7 @@ func (repository *votesRepositoryImpl) GetSummary(ctx context.Context, targetID 
 		Scan(ctx)
 
 	if err != nil {
-		return nil, errors.HandlePGError(err)
+		return nil, bunovel.HandlePGError(err)
 	}
 
 	return model, nil
@@ -88,7 +87,7 @@ func (repository *votesRepositoryImpl) ListUserVotes(ctx context.Context, userID
 		Scan(ctx)
 
 	if err != nil {
-		return nil, errors.HandlePGError(err)
+		return nil, bunovel.HandlePGError(err)
 	}
 
 	return votes, nil
@@ -105,7 +104,7 @@ func (repository *votesRepositoryImpl) Cast(ctx context.Context, userID, targetI
 			Exec(ctx)
 
 		if err != nil {
-			return nil, errors.HandlePGError(err)
+			return nil, bunovel.HandlePGError(err)
 		}
 
 		return nil, nil
@@ -126,7 +125,7 @@ func (repository *votesRepositoryImpl) Cast(ctx context.Context, userID, targetI
 		Scan(ctx)
 
 	if err != nil {
-		return nil, errors.HandlePGError(err)
+		return nil, bunovel.HandlePGError(err)
 	}
 
 	return model, nil

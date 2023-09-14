@@ -2,8 +2,8 @@ package handlers_test
 
 import (
 	"encoding/json"
-	"github.com/a-novel/go-framework/errors"
-	"github.com/a-novel/go-framework/test"
+	"github.com/a-novel/bunovel"
+	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/handlers"
 	"github.com/a-novel/votes-service/pkg/models"
 	servicesmocks "github.com/a-novel/votes-service/pkg/services/mocks"
@@ -34,7 +34,7 @@ func TestGetVotesSummaryHandler(t *testing.T) {
 			name:                          "Success",
 			query:                         "?targetID=01010101-0101-0101-0101-010101010101&target=target",
 			shouldCallService:             true,
-			shouldCallServiceWithTargetID: test.NumberUUID(1),
+			shouldCallServiceWithTargetID: goframework.NumberUUID(1),
 			shouldCallServiceWithTarget:   "target",
 			serviceResp: &models.VotesSummary{
 				UpVotes:   128,
@@ -50,9 +50,9 @@ func TestGetVotesSummaryHandler(t *testing.T) {
 			name:                          "Error/ErrNotFound",
 			query:                         "?targetID=01010101-0101-0101-0101-010101010101&target=target",
 			shouldCallService:             true,
-			shouldCallServiceWithTargetID: test.NumberUUID(1),
+			shouldCallServiceWithTargetID: goframework.NumberUUID(1),
 			shouldCallServiceWithTarget:   "target",
-			serviceErr:                    errors.ErrNotFound,
+			serviceErr:                    bunovel.ErrNotFound,
 			expectStatus:                  http.StatusNotFound,
 		},
 	}

@@ -4,7 +4,7 @@ import (
 	"context"
 	goerrors "errors"
 	auth "github.com/a-novel/auth-service/framework"
-	"github.com/a-novel/go-framework/errors"
+	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/adapters"
 	"github.com/a-novel/votes-service/pkg/dao"
 	"github.com/a-novel/votes-service/pkg/models"
@@ -33,7 +33,7 @@ func (s *getUserVoteServiceImpl) Get(ctx context.Context, tokenRaw string, targe
 		return nil, goerrors.Join(ErrIntrospectToken, err)
 	}
 	if !token.OK {
-		return nil, goerrors.Join(errors.ErrInvalidCredentials, ErrInvalidToken)
+		return nil, goerrors.Join(goframework.ErrInvalidCredentials, ErrInvalidToken)
 	}
 
 	vote, err := s.repository.Get(ctx, token.Token.Payload.ID, targetID, target)

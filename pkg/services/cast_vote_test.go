@@ -4,8 +4,7 @@ import (
 	"context"
 	authmocks "github.com/a-novel/auth-service/framework/mocks"
 	authmodels "github.com/a-novel/auth-service/pkg/models"
-	"github.com/a-novel/go-framework/errors"
-	"github.com/a-novel/go-framework/test"
+	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/dao"
 	daomocks "github.com/a-novel/votes-service/pkg/dao/mocks"
 	"github.com/a-novel/votes-service/pkg/models"
@@ -48,23 +47,23 @@ func TestCastVoteService(t *testing.T) {
 			name:     "Success/UpVote",
 			tokenRaw: "token",
 			form: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 				Vote:     lo.ToPtr(models.VoteValueUp),
 			},
-			id:         test.NumberUUID(10),
+			id:         goframework.NumberUUID(10),
 			now:        baseTime,
 			clientName: "target",
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO:        true,
 			shouldCallGetSummary: true,
 			summary: &dao.VotesSummaryModel{
-				TargetID:  test.NumberUUID(1),
+				TargetID:  goframework.NumberUUID(1),
 				Target:    "target",
 				UpVotes:   128,
 				DownVotes: 64,
@@ -78,23 +77,23 @@ func TestCastVoteService(t *testing.T) {
 			name:     "Success/DownVote",
 			tokenRaw: "token",
 			form: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 				Vote:     lo.ToPtr(models.VoteValueDown),
 			},
-			id:         test.NumberUUID(10),
+			id:         goframework.NumberUUID(10),
 			now:        baseTime,
 			clientName: "target",
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO:        true,
 			shouldCallGetSummary: true,
 			summary: &dao.VotesSummaryModel{
-				TargetID:  test.NumberUUID(1),
+				TargetID:  goframework.NumberUUID(1),
 				Target:    "target",
 				UpVotes:   128,
 				DownVotes: 64,
@@ -108,22 +107,22 @@ func TestCastVoteService(t *testing.T) {
 			name:     "Success/NoVote",
 			tokenRaw: "token",
 			form: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 			},
-			id:         test.NumberUUID(10),
+			id:         goframework.NumberUUID(10),
 			now:        baseTime,
 			clientName: "target",
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO:        true,
 			shouldCallGetSummary: true,
 			summary: &dao.VotesSummaryModel{
-				TargetID:  test.NumberUUID(1),
+				TargetID:  goframework.NumberUUID(1),
 				Target:    "target",
 				UpVotes:   128,
 				DownVotes: 64,
@@ -137,24 +136,24 @@ func TestCastVoteService(t *testing.T) {
 			name:     "Error/TargetCallFailure",
 			tokenRaw: "token",
 			form: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 				Vote:     lo.ToPtr(models.VoteValueUp),
 			},
-			id:         test.NumberUUID(10),
+			id:         goframework.NumberUUID(10),
 			now:        baseTime,
 			clientName: "target",
 			clientErr:  fooErr,
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO:        true,
 			shouldCallGetSummary: true,
 			summary: &dao.VotesSummaryModel{
-				TargetID:  test.NumberUUID(1),
+				TargetID:  goframework.NumberUUID(1),
 				Target:    "target",
 				UpVotes:   128,
 				DownVotes: 64,
@@ -165,17 +164,17 @@ func TestCastVoteService(t *testing.T) {
 			name:     "Error/GetSummaryFailure",
 			tokenRaw: "token",
 			form: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 				Vote:     lo.ToPtr(models.VoteValueUp),
 			},
-			id:         test.NumberUUID(10),
+			id:         goframework.NumberUUID(10),
 			now:        baseTime,
 			clientName: "target",
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO:        true,
@@ -187,17 +186,17 @@ func TestCastVoteService(t *testing.T) {
 			name:     "Error/CastVoteFailure",
 			tokenRaw: "token",
 			form: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 				Vote:     lo.ToPtr(models.VoteValueUp),
 			},
-			id:         test.NumberUUID(10),
+			id:         goframework.NumberUUID(10),
 			now:        baseTime,
 			clientName: "target",
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO: true,
@@ -208,44 +207,44 @@ func TestCastVoteService(t *testing.T) {
 			name:     "Error/BadTarget",
 			tokenRaw: "token",
 			form: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "fake-target",
 				Vote:     lo.ToPtr(models.VoteValueUp),
 			},
-			id:         test.NumberUUID(10),
+			id:         goframework.NumberUUID(10),
 			now:        baseTime,
 			clientName: "target",
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
-			expectErr: errors.ErrInvalidEntity,
+			expectErr: goframework.ErrInvalidEntity,
 		},
 		{
 			name:     "Error/NotAuthenticated",
 			tokenRaw: "token",
 			form: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "fake-target",
 				Vote:     lo.ToPtr(models.VoteValueUp),
 			},
-			id:             test.NumberUUID(10),
+			id:             goframework.NumberUUID(10),
 			now:            baseTime,
 			clientName:     "target",
 			authClientResp: &authmodels.UserTokenStatus{},
-			expectErr:      errors.ErrInvalidCredentials,
+			expectErr:      goframework.ErrInvalidCredentials,
 		},
 		{
 			name:     "Error/AuthClientFailure",
 			tokenRaw: "token",
 			form: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "fake-target",
 				Vote:     lo.ToPtr(models.VoteValueUp),
 			},
-			id:            test.NumberUUID(10),
+			id:            goframework.NumberUUID(10),
 			now:           baseTime,
 			clientName:    "target",
 			authClientErr: fooErr,
@@ -255,20 +254,20 @@ func TestCastVoteService(t *testing.T) {
 			name:     "Error/BadVote",
 			tokenRaw: "token",
 			form: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 				Vote:     lo.ToPtr(models.VoteValue("invalid")),
 			},
-			id:         test.NumberUUID(10),
+			id:         goframework.NumberUUID(10),
 			now:        baseTime,
 			clientName: "target",
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
-			expectErr: errors.ErrInvalidEntity,
+			expectErr: goframework.ErrInvalidEntity,
 		},
 	}
 

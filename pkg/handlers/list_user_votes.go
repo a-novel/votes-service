@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/a-novel/go-framework/errors"
+	"github.com/a-novel/go-apis"
+	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/models"
 	"github.com/a-novel/votes-service/pkg/services"
 	"github.com/gin-gonic/gin"
@@ -33,10 +34,10 @@ func (h *listUserVotesHandlerImpl) Handle(c *gin.Context) {
 
 	votes, err := h.service.List(c, token, query)
 	if err != nil {
-		errors.ErrorToHTTPCode(c, err, []errors.HTTPError{
-			{errors.ErrInvalidCredentials, http.StatusForbidden},
-			{errors.ErrInvalidEntity, http.StatusUnprocessableEntity},
-		})
+		apis.ErrorToHTTPCode(c, err, []apis.HTTPError{
+			{goframework.ErrInvalidCredentials, http.StatusForbidden},
+			{goframework.ErrInvalidEntity, http.StatusUnprocessableEntity},
+		}, false)
 		return
 	}
 

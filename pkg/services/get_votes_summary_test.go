@@ -2,7 +2,7 @@ package services_test
 
 import (
 	"context"
-	"github.com/a-novel/go-framework/test"
+	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/dao"
 	daomocks "github.com/a-novel/votes-service/pkg/dao/mocks"
 	"github.com/a-novel/votes-service/pkg/models"
@@ -27,7 +27,7 @@ func TestGetVotesSummaryService(t *testing.T) {
 	}{
 		{
 			name:     "Success",
-			targetID: test.NumberUUID(1),
+			targetID: goframework.NumberUUID(1),
 			target:   "target",
 			daoResp: &dao.VotesSummaryModel{
 				UpVotes:   100,
@@ -40,7 +40,7 @@ func TestGetVotesSummaryService(t *testing.T) {
 		},
 		{
 			name:      "Error/DAOFailure",
-			targetID:  test.NumberUUID(1),
+			targetID:  goframework.NumberUUID(1),
 			target:    "target",
 			daoErr:    fooErr,
 			expectErr: fooErr,

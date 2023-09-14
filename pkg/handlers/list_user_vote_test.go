@@ -2,8 +2,7 @@ package handlers_test
 
 import (
 	"encoding/json"
-	"github.com/a-novel/go-framework/errors"
-	"github.com/a-novel/go-framework/test"
+	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/handlers"
 	"github.com/a-novel/votes-service/pkg/models"
 	servicesmocks "github.com/a-novel/votes-service/pkg/services/mocks"
@@ -43,38 +42,38 @@ func TestListUserVoteHandler(t *testing.T) {
 			},
 			serviceResp: []*models.Vote{
 				{
-					ID:        test.NumberUUID(10),
+					ID:        goframework.NumberUUID(10),
 					UpdatedAt: baseTime,
 					Vote:      models.VoteValueUp,
-					UserID:    test.NumberUUID(100),
-					TargetID:  test.NumberUUID(1),
+					UserID:    goframework.NumberUUID(100),
+					TargetID:  goframework.NumberUUID(1),
 					Target:    "target",
 				},
 				{
-					ID:        test.NumberUUID(20),
+					ID:        goframework.NumberUUID(20),
 					UpdatedAt: updateTime,
 					Vote:      models.VoteValueDown,
-					UserID:    test.NumberUUID(100),
-					TargetID:  test.NumberUUID(2),
+					UserID:    goframework.NumberUUID(100),
+					TargetID:  goframework.NumberUUID(2),
 					Target:    "target",
 				},
 			},
 			expect: map[string]interface{}{
 				"votes": []interface{}{
 					map[string]interface{}{
-						"id":        test.NumberUUID(10).String(),
+						"id":        goframework.NumberUUID(10).String(),
 						"updatedAt": baseTime.Format(time.RFC3339),
 						"vote":      "up",
-						"userID":    test.NumberUUID(100).String(),
-						"targetID":  test.NumberUUID(1).String(),
+						"userID":    goframework.NumberUUID(100).String(),
+						"targetID":  goframework.NumberUUID(1).String(),
 						"target":    "target",
 					},
 					map[string]interface{}{
-						"id":        test.NumberUUID(20).String(),
+						"id":        goframework.NumberUUID(20).String(),
 						"updatedAt": updateTime.Format(time.RFC3339),
 						"vote":      "down",
-						"userID":    test.NumberUUID(100).String(),
-						"targetID":  test.NumberUUID(2).String(),
+						"userID":    goframework.NumberUUID(100).String(),
+						"targetID":  goframework.NumberUUID(2).String(),
 						"target":    "target",
 					},
 				},
@@ -91,7 +90,7 @@ func TestListUserVoteHandler(t *testing.T) {
 				Limit:  10,
 				Offset: 5,
 			},
-			serviceErr:   errors.ErrInvalidCredentials,
+			serviceErr:   goframework.ErrInvalidCredentials,
 			expectStatus: http.StatusForbidden,
 		},
 		{
@@ -104,7 +103,7 @@ func TestListUserVoteHandler(t *testing.T) {
 				Limit:  10,
 				Offset: 5,
 			},
-			serviceErr:   errors.ErrInvalidEntity,
+			serviceErr:   goframework.ErrInvalidEntity,
 			expectStatus: http.StatusUnprocessableEntity,
 		},
 	}

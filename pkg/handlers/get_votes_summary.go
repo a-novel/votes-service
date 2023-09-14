@@ -1,7 +1,8 @@
 package handlers
 
 import (
-	"github.com/a-novel/go-framework/errors"
+	"github.com/a-novel/bunovel"
+	"github.com/a-novel/go-apis"
 	"github.com/a-novel/votes-service/pkg/models"
 	"github.com/a-novel/votes-service/pkg/services"
 	"github.com/gin-gonic/gin"
@@ -31,9 +32,9 @@ func (h *getVotesSummaryHandlerImpl) Handle(c *gin.Context) {
 
 	summary, err := h.service.Get(c, query.TargetID.Value(), query.Target)
 	if err != nil {
-		errors.ErrorToHTTPCode(c, err, []errors.HTTPError{
-			{errors.ErrNotFound, http.StatusNotFound},
-		})
+		apis.ErrorToHTTPCode(c, err, []apis.HTTPError{
+			{bunovel.ErrNotFound, http.StatusNotFound},
+		}, false)
 		return
 	}
 
