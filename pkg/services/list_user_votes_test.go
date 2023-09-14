@@ -4,9 +4,8 @@ import (
 	"context"
 	authmocks "github.com/a-novel/auth-service/framework/mocks"
 	authmodels "github.com/a-novel/auth-service/pkg/models"
-	"github.com/a-novel/go-framework/errors"
-	"github.com/a-novel/go-framework/postgresql"
-	"github.com/a-novel/go-framework/test"
+	"github.com/a-novel/bunovel"
+	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/dao"
 	daomocks "github.com/a-novel/votes-service/pkg/dao/mocks"
 	"github.com/a-novel/votes-service/pkg/models"
@@ -43,41 +42,41 @@ func TestListUserVotesService(t *testing.T) {
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO: true,
 			daoResp: []*dao.VoteModel{
 				{
-					Metadata: postgresql.NewMetadata(test.NumberUUID(10), baseTime, nil),
+					Metadata: bunovel.NewMetadata(goframework.NumberUUID(10), baseTime, nil),
 					Vote:     models.VoteValueUp,
-					UserID:   test.NumberUUID(100),
-					TargetID: test.NumberUUID(1),
+					UserID:   goframework.NumberUUID(100),
+					TargetID: goframework.NumberUUID(1),
 					Target:   "target",
 				},
 				{
-					Metadata: postgresql.NewMetadata(test.NumberUUID(20), baseTime, &updateTime),
+					Metadata: bunovel.NewMetadata(goframework.NumberUUID(20), baseTime, &updateTime),
 					Vote:     models.VoteValueDown,
-					UserID:   test.NumberUUID(100),
-					TargetID: test.NumberUUID(3),
+					UserID:   goframework.NumberUUID(100),
+					TargetID: goframework.NumberUUID(3),
 					Target:   "target",
 				},
 			},
 			expect: []*models.Vote{
 				{
-					ID:        test.NumberUUID(10),
+					ID:        goframework.NumberUUID(10),
 					UpdatedAt: baseTime,
 					Vote:      models.VoteValueUp,
-					UserID:    test.NumberUUID(100),
-					TargetID:  test.NumberUUID(1),
+					UserID:    goframework.NumberUUID(100),
+					TargetID:  goframework.NumberUUID(1),
 					Target:    "target",
 				},
 				{
-					ID:        test.NumberUUID(20),
+					ID:        goframework.NumberUUID(20),
 					UpdatedAt: updateTime,
 					Vote:      models.VoteValueDown,
-					UserID:    test.NumberUUID(100),
-					TargetID:  test.NumberUUID(3),
+					UserID:    goframework.NumberUUID(100),
+					TargetID:  goframework.NumberUUID(3),
 					Target:    "target",
 				},
 			},
@@ -93,7 +92,7 @@ func TestListUserVotesService(t *testing.T) {
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO: true,
@@ -110,7 +109,7 @@ func TestListUserVotesService(t *testing.T) {
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
 			shouldCallDAO: true,
@@ -128,10 +127,10 @@ func TestListUserVotesService(t *testing.T) {
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
-			expectErr: errors.ErrInvalidEntity,
+			expectErr: goframework.ErrInvalidEntity,
 		},
 		{
 			name:     "Error/NoLimit",
@@ -143,10 +142,10 @@ func TestListUserVotesService(t *testing.T) {
 			authClientResp: &authmodels.UserTokenStatus{
 				OK: true,
 				Token: &authmodels.UserToken{
-					Payload: authmodels.UserTokenPayload{ID: test.NumberUUID(100)},
+					Payload: authmodels.UserTokenPayload{ID: goframework.NumberUUID(100)},
 				},
 			},
-			expectErr: errors.ErrInvalidEntity,
+			expectErr: goframework.ErrInvalidEntity,
 		},
 		{
 			name:     "Error/NotAuthenticated",
@@ -157,7 +156,7 @@ func TestListUserVotesService(t *testing.T) {
 				Offset: 5,
 			},
 			authClientResp: &authmodels.UserTokenStatus{},
-			expectErr:      errors.ErrInvalidCredentials,
+			expectErr:      goframework.ErrInvalidCredentials,
 		},
 		{
 			name:     "Error/AuthClientFailure",

@@ -1,6 +1,8 @@
 package models
 
-import "github.com/a-novel/go-framework/types"
+import (
+	"github.com/a-novel/go-apis"
+)
 
 type ListUserVotesQuery struct {
 	Target string `json:"target" form:"target"`
@@ -9,11 +11,11 @@ type ListUserVotesQuery struct {
 }
 
 type GetUserVoteQuery struct {
-	TargetID types.StringUUID `json:"targetID" form:"targetID"`
-	Target   string           `json:"target" form:"target"`
+	TargetID apis.StringUUID `json:"targetID" form:"targetID"`
+	Target   string          `json:"target" form:"target"`
 }
 
 type GetVotesSummaryQuery struct {
-	TargetID types.StringUUID `json:"targetID" form:"targetID"`
-	Target   string           `json:"target" form:"target"`
+	TargetID apis.StringUUID `json:"targetID" form:"targetID"`
+	Target   string          `json:"target" form:"target"`
 }

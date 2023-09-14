@@ -3,8 +3,7 @@ package handlers_test
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/a-novel/go-framework/errors"
-	"github.com/a-novel/go-framework/test"
+	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/handlers"
 	"github.com/a-novel/votes-service/pkg/models"
 	servicesmocks "github.com/a-novel/votes-service/pkg/services/mocks"
@@ -37,13 +36,13 @@ func TestCastVoteHandler(t *testing.T) {
 			name:          "Success",
 			authorization: "Bearer my-token",
 			body: map[string]interface{}{
-				"targetID": test.NumberUUID(1).String(),
+				"targetID": goframework.NumberUUID(1).String(),
 				"target":   "target",
 				"vote":     "up",
 			},
 			shouldCallService: true,
 			shouldCallServiceWith: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 				Vote:     lo.ToPtr(models.VoteValueUp),
 			},
@@ -61,12 +60,12 @@ func TestCastVoteHandler(t *testing.T) {
 			name:          "Success/NoVote",
 			authorization: "Bearer my-token",
 			body: map[string]interface{}{
-				"targetID": test.NumberUUID(1).String(),
+				"targetID": goframework.NumberUUID(1).String(),
 				"target":   "target",
 			},
 			shouldCallService: true,
 			shouldCallServiceWith: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 			},
 			serviceResp: &models.VotesSummary{
@@ -83,34 +82,34 @@ func TestCastVoteHandler(t *testing.T) {
 			name:          "Error/ErrInvalidCredentials",
 			authorization: "Bearer my-token",
 			body: map[string]interface{}{
-				"targetID": test.NumberUUID(1).String(),
+				"targetID": goframework.NumberUUID(1).String(),
 				"target":   "target",
 				"vote":     "up",
 			},
 			shouldCallService: true,
 			shouldCallServiceWith: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 				Vote:     lo.ToPtr(models.VoteValueUp),
 			},
-			serviceErr:   errors.ErrInvalidCredentials,
+			serviceErr:   goframework.ErrInvalidCredentials,
 			expectStatus: http.StatusForbidden,
 		},
 		{
 			name:          "Error/ErrInvalidEntity",
 			authorization: "Bearer my-token",
 			body: map[string]interface{}{
-				"targetID": test.NumberUUID(1).String(),
+				"targetID": goframework.NumberUUID(1).String(),
 				"target":   "target",
 				"vote":     "up",
 			},
 			shouldCallService: true,
 			shouldCallServiceWith: models.VoteForm{
-				TargetID: test.NumberUUID(1),
+				TargetID: goframework.NumberUUID(1),
 				Target:   "target",
 				Vote:     lo.ToPtr(models.VoteValueUp),
 			},
-			serviceErr:   errors.ErrInvalidEntity,
+			serviceErr:   goframework.ErrInvalidEntity,
 			expectStatus: http.StatusUnprocessableEntity,
 		},
 	}
