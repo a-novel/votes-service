@@ -1,11 +1,11 @@
-github.com/a-novel/auth-service v1.0.2 h1:2jQ9cSZGrhbDpKTsnV7u6KB6W2cT6bzwunyQRw/r0Zk=
-github.com/a-novel/auth-service v1.0.2/go.mod h1:nb+SBA2w++YH0U28TNNPL7LalD475bISFcuEqIs9yi0=
+github.com/a-novel/auth-service v1.0.3 h1:6RfHHcDhD0q+MZSyqEVv6pg9PUuABruUHye2iB8+cOw=
+github.com/a-novel/auth-service v1.0.3/go.mod h1:xJbbkZPyb09+RqNlKhhoGdKAP2cZ+AuU6MXgOcVvm+4=
 github.com/a-novel/bunovel v1.0.0 h1:KG/dwIddrDuMaH0e0f6aKF/uo03s/TnvtSOFkvzyV+Q=
 github.com/a-novel/bunovel v1.0.0/go.mod h1:nd7BYN2rVmDNVBJUfGtPae2zNSMtqJX02sy1JGPbkQo=
-github.com/a-novel/forum-service v1.0.2 h1:qx+r474mWxK84uXKIjLIta9sRoUChd+2vdSS1DrboOg=
-github.com/a-novel/forum-service v1.0.2/go.mod h1:wmI0hGk2OY0k1iAHOQXYiYpkxDs0BtCrQlRkKVZcs8g=
-github.com/a-novel/go-apis v1.0.0 h1:VFDjnW9+A1og2kF6NPXuSPVIz6tDe2aS1ImQTesUCwY=
-github.com/a-novel/go-apis v1.0.0/go.mod h1:TpBGLA4WPcOprcZqr9ul3zY9Q5xESG8yU7XHoEFwMaI=
+github.com/a-novel/forum-service v1.0.3 h1:gOXrhvIZHIR+lCOhFTjroeGx2pBmEytCVTmqjhkbyrY=
+github.com/a-novel/forum-service v1.0.3/go.mod h1:H/dDwOzHHMW7ZHUaMuXwVfDiCqTXNheXsAx/eW0uZiA=
+github.com/a-novel/go-apis v1.0.2 h1:p6jOSR3Kv9hMWqNKPpNWq2uKukUt8bzZeo8IMNn91d0=
+github.com/a-novel/go-apis v1.0.2/go.mod h1:TpBGLA4WPcOprcZqr9ul3zY9Q5xESG8yU7XHoEFwMaI=
 github.com/a-novel/go-framework v1.0.1 h1:5rV26w7Pr45uhXQPxYmHX1sDGj3gRou6eMuFarffA0c=
 github.com/a-novel/go-framework v1.0.1/go.mod h1:4IbRbEvzEROmAoIkprQTYLr7f2p/dfjTLk4WpQNub/A=
 github.com/bytedance/sonic v1.5.0/go.mod h1:ED5hyg4y6t3/9Ku1R6dU/4KyJ48DZ4jPhfY1O2AihPM=

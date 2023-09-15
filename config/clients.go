@@ -3,15 +3,24 @@ package config
 import (
 	auth "github.com/a-novel/auth-service/framework"
 	forum "github.com/a-novel/forum-service/framework"
-	"github.com/samber/lo"
+	"github.com/rs/zerolog"
+	"net/url"
 )
 
-func GetAuthClient() auth.Client {
-	authURL := lo.Ternary(ENV == ProdENV, auth.ProdURL, auth.DevURL)
+func GetAuthClient(logger zerolog.Logger) auth.Client {
+	authURL, err := new(url.URL).Parse(API.External.AuthAPI)
+	if err != nil {
+		logger.Fatal().Err(err).Msg("could not parse auth API URL")
+	}
+
 	return auth.NewClient(authURL)
 }
 
-func GetForumClient() forum.Client {
-	authURL := lo.Ternary(ENV == ProdENV, forum.ProdInternalURL, forum.DevInternalURL)
-	return forum.NewClient(authURL)
+func GetForumClient(logger zerolog.Logger) forum.Client {
+	forumURL, err := new(url.URL).Parse(API.External.ForumInternalAPI)
+	if err != nil {
+		logger.Fatal().Err(err).Msg("could not parse forum API URL")
+	}
+
+	return forum.NewClient(forumURL)
 }

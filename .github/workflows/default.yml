@@ -99,6 +99,7 @@ jobs:
         with:
           secrets: |
             POSTGRES_URL=agora-votes-service-postgres:latest
+            FORUM_INTERNAL_API=agora-ip-forum-service-internal:latest
           env_vars: |
             ENV=prod
             PROJECT_ID=${{ vars.PROJECT_ID }}

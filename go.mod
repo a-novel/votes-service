@@ -3,10 +3,10 @@ module github.com/a-novel/votes-service
 go 1.21.1
 
 require (
-	github.com/a-novel/auth-service v1.0.2
+	github.com/a-novel/auth-service v1.0.3
 	github.com/a-novel/bunovel v1.0.0
-	github.com/a-novel/forum-service v1.0.2
-	github.com/a-novel/go-apis v1.0.0
+	github.com/a-novel/forum-service v1.0.3
+	github.com/a-novel/go-apis v1.0.2
 	github.com/a-novel/go-framework v1.0.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.3.1
