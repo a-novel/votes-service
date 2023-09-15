@@ -1,2 +1,4 @@
-host: https://votes.agoradesecrivains.net
 port: 8080
+external:
+  authAPI: https://auth.agoradesecrivains.net
+  forumInternalAPI: ${FORUM_INTERNAL_API}

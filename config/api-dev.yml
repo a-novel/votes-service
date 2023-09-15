@@ -1,2 +1,4 @@
-host: http://localhost
 port: 2042
+external:
+  authAPI: http://localhost:2040
+  forumInternalAPI: http://localhost:20041
