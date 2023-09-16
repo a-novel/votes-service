@@ -2,15 +2,21 @@ package adapters
 
 import (
 	"context"
-	forumclient "github.com/a-novel/forum-service/framework"
-	forummodels "github.com/a-novel/forum-service/pkg/models"
+	apiclients "github.com/a-novel/go-api-clients"
 	"github.com/a-novel/votes-service/pkg/models"
 	"github.com/google/uuid"
 )
 
-func NewImproveRequestVoteClient(client forumclient.Client) models.CheckVoteClient {
+func NewImproveRequestVoteClient(client apiclients.ForumClient, permissionsClient apiclients.PermissionsClient) models.CheckVoteClient {
 	return func(ctx context.Context, id, userID uuid.UUID, upVotes, downVotes int) error {
-		return client.VoteImproveRequest(ctx, forummodels.UpdateImproveRequestVotesForm{
+		if err := permissionsClient.HasUserScope(ctx, apiclients.HasUserScopeQuery{
+			UserID: userID,
+			Scope:  apiclients.CanVotePost,
+		}); err != nil {
+			return err
+		}
+
+		return client.VoteImproveRequest(ctx, apiclients.UpdateImproveRequestVotesForm{
 			ID:        id,
 			UserID:    userID,
 			UpVotes:   upVotes,
@@ -19,9 +25,16 @@ func NewImproveRequestVoteClient(client forumclient.Client) models.CheckVoteClie
 	}
 }
 
-func NewImproveSuggestionVoteClient(client forumclient.Client) models.CheckVoteClient {
+func NewImproveSuggestionVoteClient(client apiclients.ForumClient, permissionsClient apiclients.PermissionsClient) models.CheckVoteClient {
 	return func(ctx context.Context, id, userID uuid.UUID, upVotes, downVotes int) error {
-		return client.VoteImproveSuggestion(ctx, forummodels.UpdateImproveSuggestionVotesForm{
+		if err := permissionsClient.HasUserScope(ctx, apiclients.HasUserScopeQuery{
+			UserID: userID,
+			Scope:  apiclients.CanVotePost,
+		}); err != nil {
+			return err
+		}
+
+		return client.VoteImproveSuggestion(ctx, apiclients.UpdateImproveSuggestionVotesForm{
 			ID:        id,
 			UserID:    userID,
 			UpVotes:   upVotes,

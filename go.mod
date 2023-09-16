@@ -3,9 +3,8 @@ module github.com/a-novel/votes-service
 go 1.21.1
 
 require (
-	github.com/a-novel/auth-service v1.0.3
 	github.com/a-novel/bunovel v1.0.0
-	github.com/a-novel/forum-service v1.0.3
+	github.com/a-novel/go-api-clients v1.0.9
 	github.com/a-novel/go-apis v1.0.2
 	github.com/a-novel/go-framework v1.0.1
 	github.com/gin-gonic/gin v1.9.1
@@ -29,6 +28,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.15.4 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect

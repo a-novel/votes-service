@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 	goerrors "errors"
-	auth "github.com/a-novel/auth-service/framework"
+	apiclients "github.com/a-novel/go-api-clients"
 	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/adapters"
 	"github.com/a-novel/votes-service/pkg/dao"
@@ -17,7 +17,7 @@ type CastVoteService interface {
 	Cast(ctx context.Context, tokenRaw string, form models.VoteForm, id uuid.UUID, now time.Time) (*models.VotesSummary, error)
 }
 
-func NewCastVoteService(repository dao.VotesRepository, authClient auth.Client, targetsClients map[string]models.CheckVoteClient) CastVoteService {
+func NewCastVoteService(repository dao.VotesRepository, authClient apiclients.AuthClient, targetsClients map[string]models.CheckVoteClient) CastVoteService {
 	return &castVoteServiceImpl{
 		repository:     repository,
 		authClient:     authClient,
@@ -27,7 +27,7 @@ func NewCastVoteService(repository dao.VotesRepository, authClient auth.Client, 
 
 type castVoteServiceImpl struct {
 	repository dao.VotesRepository
-	authClient auth.Client
+	authClient apiclients.AuthClient
 
 	targetsClients map[string]models.CheckVoteClient
 }

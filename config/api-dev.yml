@@ -1,4 +1,5 @@
 port: 2042
 external:
-  authAPI: http://localhost:2040
-  forumInternalAPI: http://localhost:20041
+  authAPI: http://localhost:20040
+  forumAPI: http://localhost:20041
+  permissionsAPI: http://localhost:20043

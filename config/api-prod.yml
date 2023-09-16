@@ -1,4 +1,5 @@
 port: 8080
 external:
-  authAPI: https://auth.agoradesecrivains.net
-  forumInternalAPI: ${FORUM_INTERNAL_API}
+  authAPI: ${AUTH_API}
+  forumAPI: ${FORUM_API}
+  permissionsAPI: ${PERMISSIONS_API}
