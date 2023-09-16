@@ -20,6 +20,7 @@ func main() {
 	logger := config.GetLogger()
 	authClient := config.GetAuthClient(logger)
 	forumClient := config.GetForumClient(logger)
+	permissionsClient := config.GetPermissionsClient(logger)
 
 	postgres, sql, err := bunovel.NewClient(ctx, bunovel.Config{
 		Driver:                &bunovel.PGDriver{DSN: config.Postgres.DSN, AppName: config.App.Name},
@@ -37,8 +38,8 @@ func main() {
 	votesDAO := dao.NewVotesRepository(postgres)
 
 	votesClients := map[string]models.CheckVoteClient{
-		"improveRequest":    adapters.NewImproveRequestVoteClient(forumClient),
-		"improveSuggestion": adapters.NewImproveSuggestionVoteClient(forumClient),
+		"improveRequest":    adapters.NewImproveRequestVoteClient(forumClient, permissionsClient),
+		"improveSuggestion": adapters.NewImproveSuggestionVoteClient(forumClient, permissionsClient),
 	}
 
 	castVoteService := services.NewCastVoteService(votesDAO, authClient, votesClients)
@@ -61,10 +62,13 @@ func main() {
 				return postgres.PingContext(ctx)
 			},
 			"auth-client": func() error {
-				return authClient.Ping()
+				return authClient.Ping(ctx)
 			},
 			"forum-client": func() error {
-				return forumClient.Ping()
+				return forumClient.Ping(ctx)
+			},
+			"permissions-client": func() error {
+				return permissionsClient.Ping(ctx)
 			},
 		},
 	})

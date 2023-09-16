@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 	goerrors "errors"
-	auth "github.com/a-novel/auth-service/framework"
+	apiclients "github.com/a-novel/go-api-clients"
 	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/adapters"
 	"github.com/a-novel/votes-service/pkg/dao"
@@ -15,7 +15,7 @@ type GetUserVoteService interface {
 	Get(ctx context.Context, tokenRaw string, targetID uuid.UUID, target string) (*models.Vote, error)
 }
 
-func NewGetUserVoteService(repository dao.VotesRepository, authClient auth.Client) GetUserVoteService {
+func NewGetUserVoteService(repository dao.VotesRepository, authClient apiclients.AuthClient) GetUserVoteService {
 	return &getUserVoteServiceImpl{
 		repository: repository,
 		authClient: authClient,
@@ -24,7 +24,7 @@ func NewGetUserVoteService(repository dao.VotesRepository, authClient auth.Clien
 
 type getUserVoteServiceImpl struct {
 	repository dao.VotesRepository
-	authClient auth.Client
+	authClient apiclients.AuthClient
 }
 
 func (s *getUserVoteServiceImpl) Get(ctx context.Context, tokenRaw string, targetID uuid.UUID, target string) (*models.Vote, error) {
