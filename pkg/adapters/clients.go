@@ -2,7 +2,7 @@ package adapters
 
 import (
 	"context"
-	apiclients "github.com/a-novel/go-api-clients"
+	apiclients "github.com/a-novel/go-apis/clients"
 	"github.com/a-novel/votes-service/pkg/models"
 	"github.com/google/uuid"
 )

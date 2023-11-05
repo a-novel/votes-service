@@ -1,7 +1,7 @@
 package config
 
 import (
-	apiclients "github.com/a-novel/go-api-clients"
+	apiclients "github.com/a-novel/go-apis/clients"
 	"github.com/rs/zerolog"
 	"net/url"
 )
