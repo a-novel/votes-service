@@ -2,8 +2,8 @@ package services_test
 
 import (
 	"context"
-	apiclients "github.com/a-novel/go-api-clients"
-	apiclientsmocks "github.com/a-novel/go-api-clients/mocks"
+	apiclients "github.com/a-novel/go-apis/clients"
+	apiclientsmocks "github.com/a-novel/go-apis/clients/mocks"
 	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/dao"
 	daomocks "github.com/a-novel/votes-service/pkg/dao/mocks"

@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 	goerrors "errors"
-	apiclients "github.com/a-novel/go-api-clients"
+	apiclients "github.com/a-novel/go-apis/clients"
 	goframework "github.com/a-novel/go-framework"
 	"github.com/a-novel/votes-service/pkg/adapters"
 	"github.com/a-novel/votes-service/pkg/dao"
